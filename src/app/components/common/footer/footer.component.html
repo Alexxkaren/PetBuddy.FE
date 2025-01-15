@@ -1,0 +1,43 @@
+<footer>
+  <mat-grid-list cols="3" rowHeight="230px">
+    <mat-grid-tile>
+      <!-- Left side -->
+      <div class="footer-left">
+        <img
+          src="images/footer_img.svg"
+          alt="footer image"
+          class="logo_footer"
+        />
+        <button mat-raised-button>{{ "footer.contact" | translate }}</button>
+        <div class="rights">{{ "footer.rights" | translate }}</div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!-- Middle -->
+      <div class="footer-center">
+        <div class="footer_links">
+          <a routerLink="/about">{{ "footer.about" | translate }}</a>
+          <a routerLink="/contact">{{ "footer.contact" | translate }}</a>
+          <a routerLink="/donate">{{ "footer.donate" | translate }}</a>
+        </div>
+        <div class="slogan">{{ "footer.slogan" | translate }}</div>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!-- Right side -->
+      <div class="footer-right">
+        <a href="https://www.facebook.com/" target="_blank" rel="noopener">
+          <img src="images/fb.svg" alt="facebook" />
+        </a>
+        <a href="https://www.github.com/" target="_blank" rel="noopener">
+          <img src="images/git.svg" alt="github" />
+        </a>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+          <img src="images/ig.svg" alt="instagram" />
+        </a>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</footer>

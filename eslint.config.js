@@ -1,0 +1,277 @@
+// @ts-nocheck
+const eslint = require("@eslint/js");
+const tseslint = require("typescript-eslint");
+const angular = require("angular-eslint");
+const stylisticPlugin = require("@stylistic/eslint-plugin");
+const preferArrowPlugin = require("eslint-plugin-prefer-arrow");
+const jsdocPlugin = require("eslint-plugin-jsdoc");
+const importPlugin = require("eslint-plugin-import");
+
+module.exports = tseslint.config(
+  {
+    files: ["**/*.ts"],
+    ignores: ["**/*.spec.ts", "**/*.d.ts", "cypress/**/*.ts"],
+    languageOptions: {
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: __dirname, // or import.meta.dirname for ESM
+        project: ["./tsconfig.json", "cypress/tsconfig.json"],
+      },
+    },
+    plugins: {
+      "@stylistic": stylisticPlugin,
+      "prefer-arrow": preferArrowPlugin,
+      jsdoc: jsdocPlugin,
+      import: importPlugin,
+    },
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.recommended,
+      ...tseslint.configs.stylistic,
+      ...angular.configs.tsRecommended,
+    ],
+    processor: angular.processInlineTemplates,
+    rules: {
+      "@angular-eslint/component-class-suffix": "error",
+      "@angular-eslint/directive-class-suffix": "error",
+      "@angular-eslint/no-host-metadata-property": "error",
+      "@angular-eslint/no-input-rename": "error",
+      "@angular-eslint/no-inputs-metadata-property": "error",
+      "@angular-eslint/no-output-on-prefix": "error",
+      "@angular-eslint/no-output-rename": "error",
+      "@angular-eslint/no-outputs-metadata-property": "error",
+      "@angular-eslint/use-lifecycle-interface": "error",
+      "@angular-eslint/use-pipe-transform-interface": "error",
+      "@typescript-eslint/adjacent-overload-signatures": "error",
+      "@typescript-eslint/array-type": [
+        "error",
+        {
+          default: "array",
+        },
+      ],
+      "@typescript-eslint/await-thenable": "error",
+      "@typescript-eslint/ban-ts-comment": "error",
+      "@typescript-eslint/no-empty-object-type": [
+        "error",
+        {
+          allowInterfaces: "with-single-extends",
+        },
+      ],
+      "@typescript-eslint/consistent-type-assertions": "error",
+      "@typescript-eslint/consistent-type-definitions": "error",
+      "@typescript-eslint/dot-notation": "off",
+      "@typescript-eslint/explicit-member-accessibility": [
+        "off",
+        {
+          accessibility: "explicit",
+        },
+      ],
+      "@typescript-eslint/explicit-module-boundary-types": "warn",
+      "@typescript-eslint/indent": "off",
+      "@stylistic/member-delimiter-style": [
+        "error",
+        {
+          multiline: {
+            delimiter: "semi",
+            requireLast: true,
+          },
+          singleline: {
+            delimiter: "semi",
+            requireLast: false,
+          },
+        },
+      ],
+      "@typescript-eslint/member-ordering": "error",
+      "@typescript-eslint/naming-convention": "off",
+      "@typescript-eslint/no-array-constructor": "error",
+      "@typescript-eslint/no-empty-function": "off",
+      "@typescript-eslint/no-empty-interface": [
+        "error",
+        {
+          allowSingleExtends: true,
+        },
+      ],
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-extra-non-null-assertion": "error",
+      "@stylistic/no-extra-semi": "error",
+      "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/no-for-in-array": "error",
+      "@typescript-eslint/no-implied-eval": "error",
+      "@typescript-eslint/no-inferrable-types": [
+        "error",
+        {
+          ignoreParameters: true,
+        },
+      ],
+      "@typescript-eslint/no-misused-new": "error",
+      "@typescript-eslint/no-misused-promises": "error",
+      "@typescript-eslint/no-namespace": "error",
+      "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
+      "@typescript-eslint/no-non-null-assertion": "error",
+      "@typescript-eslint/no-parameter-properties": "off",
+      "@typescript-eslint/no-shadow": [
+        "error",
+        {
+          hoist: "all",
+        },
+      ],
+      "@typescript-eslint/no-this-alias": "error",
+      "@typescript-eslint/no-unnecessary-type-assertion": "error",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-unused-expressions": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          args: "none",
+        },
+      ],
+      "@typescript-eslint/no-use-before-define": "off",
+      "@typescript-eslint/no-var-requires": "error",
+      "@typescript-eslint/prefer-as-const": "error",
+      "@typescript-eslint/prefer-for-of": "error",
+      "@typescript-eslint/prefer-function-type": "error",
+      "@typescript-eslint/prefer-namespace-keyword": "error",
+      "@typescript-eslint/prefer-regexp-exec": "error",
+      "@stylistic/quotes": ["error", "single"],
+      "@typescript-eslint/require-await": "error",
+      "@typescript-eslint/restrict-plus-operands": "error",
+      "@typescript-eslint/restrict-template-expressions": "error",
+      "@stylistic/semi": ["error", "always"],
+      "@typescript-eslint/triple-slash-reference": [
+        "error",
+        {
+          path: "always",
+          types: "prefer-import",
+          lib: "always",
+        },
+      ],
+      "@stylistic/type-annotation-spacing": "error",
+      "@typescript-eslint/unbound-method": [
+        "warn",
+        {
+          ignoreStatic: true,
+        },
+      ],
+      "@typescript-eslint/unified-signatures": "error",
+      "@typescript-eslint/no-useless-constructor": ["error"],
+      "no-useless-constructor": "off",
+      "arrow-body-style": "error",
+      "brace-style": "off",
+      "comma-dangle": [
+        "error",
+        {
+          arrays: "ignore",
+          objects: "ignore",
+          imports: "ignore",
+          exports: "ignore",
+          functions: "ignore",
+        },
+      ],
+      complexity: "off",
+      "constructor-super": "error",
+      curly: "error",
+      "eol-last": "error",
+      eqeqeq: ["error", "smart"],
+      "guard-for-in": "error",
+      "id-blacklist": "off",
+      "id-match": "off",
+      "import/no-deprecated": "warn",
+      "import/order": "error",
+      "jsdoc/check-alignment": "error",
+      "jsdoc/check-indentation": "error",
+      "max-classes-per-file": ["error", 1],
+      "max-len": [
+        "error",
+        {
+          ignorePattern: "import [^,]+ from |^export | implements",
+          code: 140,
+        },
+      ],
+      "new-parens": "error",
+      "no-array-constructor": "off",
+      "no-bitwise": "error",
+      "no-caller": "error",
+      "no-cond-assign": "error",
+      "no-console": [
+        "error",
+        {
+          allow: [
+            "warn",
+            "dir",
+            "timeLog",
+            "assert",
+            "clear",
+            "count",
+            "countReset",
+            "group",
+            "groupEnd",
+            "table",
+            "dirxml",
+            "error",
+            "groupCollapsed",
+            "Console",
+            "profile",
+            "profileEnd",
+            "timeStamp",
+            "context",
+            "debug",
+          ],
+        },
+      ],
+      "no-debugger": "error",
+      "no-empty": "off",
+      "no-empty-function": "off",
+      "no-eval": "error",
+      "no-extra-semi": "off",
+      "no-fallthrough": "error",
+      "no-implied-eval": "off",
+      "no-invalid-this": "off",
+      "no-multiple-empty-lines": [
+        "error",
+        {
+          max: 2,
+        },
+      ],
+      "no-new-wrappers": "error",
+      "no-restricted-imports": ["error", "rxjs/Rx"],
+      "no-throw-literal": "error",
+      "no-trailing-spaces": "error",
+      "no-undef-init": "error",
+      "no-underscore-dangle": "off",
+      "no-unsafe-finally": "error",
+      "no-unused-labels": "error",
+      "no-unused-vars": "off",
+      "no-var": "error",
+      "object-shorthand": "error",
+      "one-var": ["error", "never"],
+      "prefer-arrow/prefer-arrow-functions": "error",
+      "prefer-const": "error",
+      radix: "error",
+      "require-await": "off",
+      "spaced-comment": [
+        "error",
+        "always",
+        {
+          markers: ["/"],
+        },
+      ],
+      "use-isnan": "error",
+      "valid-typeof": "off",
+      camelcase: "off",
+      "no-labels": "error",
+    },
+  },
+  {
+    files: ["**/*.html"],
+    extends: [
+      ...angular.configs.templateRecommended,
+      ...angular.configs.templateAccessibility,
+    ],
+    rules: {
+      "@angular-eslint/template/prefer-control-flow": "error",
+    },
+  },
+);

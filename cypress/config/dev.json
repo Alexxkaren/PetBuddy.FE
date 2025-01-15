@@ -1,0 +1,8 @@
+{
+  "baseUrl": "http://localhost:4200",
+  "authUrl": "https://dev-jq05m2h8yd8b55zc.us.auth0.com",
+  "validUser": {
+    "username": "test.user@gmail.com",
+    "password": "TestUser123"
+  }
+}

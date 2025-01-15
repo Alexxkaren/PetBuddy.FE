@@ -1,0 +1,61 @@
+<div class="page">
+  <div class="buttons">
+    <button mat-stroked-button (click)="navigateTo('/profile')" data-cy="profile-info-btn">  
+    {{ "profile-page.title" | translate }}
+    </button>
+
+    <button mat-flat-button>
+      <mat-icon class="flat_button">check</mat-icon>
+      {{ "profile-page.pets" | translate }}
+    </button>
+  </div>
+
+  <div class="container">
+    <h1>{{ "my_pets.title" | translate }}</h1>
+
+    @if (pets.length > 0) {
+      <div class="pet-card-container">
+        @for (pet of displayedPets; track pet.id) {
+          <app-pet-profile-preview
+            [pet]="pet"
+            [canDelete]="true"
+            (petDeleted)="onPetDeleted($event)"
+          ></app-pet-profile-preview>
+        }
+      </div>
+    } @else {
+      <div class="no-pets">
+        <p>{{ "my_pets.no_pets" | translate }}</p>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="navigateTo('/add-animal')"
+        >
+          {{ "my_pets.add_pet" | translate }}
+        </button>
+      </div>
+    }
+  </div>
+
+  <div class="arrow-buttons">
+    <button
+      (click)="changePage(currentPage - 1)"
+      [disabled]="currentPage === 0"
+    >
+      <mat-icon class="material-symbols-outlined"> arrow_back </mat-icon>
+    </button>
+    <button
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage >= totalPages - 1"
+    >
+      <mat-icon class="material-symbols-outlined"> arrow_forward </mat-icon>
+    </button>
+  </div>
+</div>
+
+<ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>
+<ng-template #loadingSpinner>
+  @if (isLoading) {
+    <app-spinner></app-spinner>
+  }
+</ng-template>

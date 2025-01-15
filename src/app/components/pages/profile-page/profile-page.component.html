@@ -1,0 +1,298 @@
+<div class="mdc-layout-grid">
+  <div class="buttons">
+    <button mat-flat-button data-cy="profile-info-btn">
+      <mat-icon class="flat_button">check</mat-icon>
+      {{ "profile-page.title" | translate }}
+    </button>
+    <button
+      mat-stroked-button
+      class="second_button"
+      (click)="navigateTo('/mypets')"
+      data-cy="mypets-btn"
+    >
+      {{ "profile-page.pets" | translate }}
+    </button>
+  </div>
+
+  <h1>{{ "profile-page.title" | translate }}</h1>
+
+  <div class="profile-content">
+    <!-- Basic Info Card -->
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{
+          "profile-page.basic_info" | translate
+        }}</mat-card-title>
+        <button
+          mat-flat-button
+          class="edit"
+          (click)="openDialogTemplateBasicInfo()"
+          data-cy="edit-basic-info-btn"
+        >
+          <mat-icon class="icon">edit</mat-icon>
+          {{ "profile-page.edit" | translate }}
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ "common.first_name" | translate }}: {{ userData?.firstName }}</p>
+        <mat-divider></mat-divider>
+        <p>{{ "common.last_name" | translate }}: {{ userData?.lastName }}</p>
+        <mat-divider></mat-divider>
+        <p>
+          {{ "common.date_of_birth" | translate }}:
+          {{ userData?.dateOfBirth | date: "yyyy-MM-dd" }}
+        </p>
+        <mat-divider></mat-divider>
+        <p>
+          {{ "register.country" | translate }}:
+          {{ getStateName(userData?.cityId) }}
+        </p>
+        <mat-divider></mat-divider>
+        <p>
+          {{ "profile-page.city" | translate }}:
+          {{ getCityName(userData?.cityId) }}
+        </p>
+        <mat-divider></mat-divider>
+        <p>
+          {{ "common.address" | translate }}:
+          {{ userData?.streetAndNumber }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Contact Info Card -->
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{
+          "profile-page.contact_info" | translate
+        }}</mat-card-title>
+        <button
+          mat-flat-button
+          class="edit"
+          (click)="openDialogTemplateContactInfo()"
+          data-cy="edit-contact-info-btn" 
+        >
+          <mat-icon class="icon">edit</mat-icon>
+          {{ "profile-page.edit" | translate }}
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ "common.email" | translate }}: {{ userData?.email }}</p>
+        <mat-divider></mat-divider>
+        <p>
+          {{ "common.phone_number" | translate }}:
+          {{ userData?.phoneNumber }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- dialogs -->
+    <ng-template #dialogTemplateBasicInfo let-data>
+      <form [formGroup]="regForm" class="dialog-container">
+        <h2 data-cy="basic-info-dialog-title">{{ "profile-page.basic_info" | translate }}</h2>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "common.first_name" | translate }}</mat-label>
+          <input matInput formControlName="firstName" />
+          <mat-error>
+            <ng-container
+              *ngTemplateOutlet="
+                validationError;
+                context: { control: firstNameControl }
+              "
+            ></ng-container>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "register.country" | translate }}</mat-label>
+          <mat-select
+            formControlName="state"
+            (selectionChange)="onStateChange()"
+          >
+            @for (state of translatedStates; track state.id) {
+              <mat-option [value]="state.id">
+                {{ "states." + state.id | translate }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>
+            <ng-container
+              *ngTemplateOutlet="
+                validationError;
+                context: { control: stateControl }
+              "
+            ></ng-container>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "common.last_name" | translate }}</mat-label>
+          <input matInput formControlName="lastName" />
+          <mat-error>
+            <ng-container
+              *ngTemplateOutlet="
+                validationError;
+                context: { control: lastNameControl }
+              "
+            ></ng-container>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "register.city" | translate }}</mat-label>
+          <mat-select formControlName="cityId">
+            @for (city of citySelection; track city.id) {
+              <mat-option [value]="city.id">
+                {{ city.name }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>
+            <ng-container
+              *ngTemplateOutlet="
+                validationError;
+                context: { control: cityControl }
+              "
+            ></ng-container>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-date-picker">
+          <mat-label>{{ "common.date_of_birth" | translate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [max]="today"
+            min="1920-01-01"
+            formControlName="dateOfBirth"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>
+            <ng-container
+              *ngTemplateOutlet="
+                validationError;
+                context: { control: dateOfBirthControl }
+              "
+            ></ng-container>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "common.address" | translate }}</mat-label>
+          <input matInput formControlName="streetAndNumber" />
+          <mat-error>
+            <ng-container
+              *ngTemplateOutlet="
+                validationError;
+                context: { control: addressControl }
+              "
+            ></ng-container>
+          </mat-error>
+        </mat-form-field>
+
+        <div class="dialog_buttons">
+          <button mat-stroked-button (click)="onCancelForm()" data-cy="cancel-btn">
+            {{ "profile-page.cancel" | translate }}
+          </button>
+          <button
+            mat-flat-button
+            type="submit"
+            [disabled]="regForm.invalid"
+            (click)="submit()"
+            data-cy="submit-btn"
+          >
+            {{ "profile-page.save" | translate }}
+          </button>
+        </div>
+      </form>
+    </ng-template>
+
+    <ng-template
+      #dialogTemplateContactInfo
+      let-data
+      class="dialogTemplateContactInfo"
+    >
+      <form [formGroup]="regForm" class="dialog-container">
+        <h2 data-cy="contact-info-dialog-title">{{ "profile-page.contact_info" | translate }}</h2>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "common.email" | translate }}</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error>
+            <ng-container
+              *ngTemplateOutlet="
+                validationError;
+                context: { control: emailControl }
+              "
+            ></ng-container>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "common.phone_number" | translate }}</mat-label>
+          <input
+            matInput
+            formControlName="phoneNumber"
+            placeholder="+421 ..."
+          />
+          <mat-error>
+            <ng-container
+              *ngTemplateOutlet="
+                validationError;
+                context: { control: phoneNumberControl }
+              "
+            ></ng-container>
+          </mat-error>
+        </mat-form-field>
+
+        <div class="dialog_buttons">
+          <button mat-stroked-button (click)="onCancelForm()" data-cy="cancel-btn">
+            {{ "profile-page.cancel" | translate }}
+          </button>
+          <button
+            mat-flat-button
+            type="submit"
+            [disabled]="regForm.invalid"
+            (click)="submit()"
+            data-cy="submit-btn"
+          >
+            {{ "profile-page.save" | translate }}
+          </button>
+        </div>
+      </form>
+    </ng-template>
+
+    <ng-template #validationError let-control="control">
+      @if (isInvalid(control)) {
+        @if (control?.hasError("required")) {
+          {{ "validations.field_required" | translate }}
+        }
+
+        @if (
+          control?.hasError("pattern") &&
+          control?.value &&
+          (control === firstNameControl || control === lastNameControl)
+        ) {
+          {{ "validations.invalid_character" | translate }}
+        }
+
+        @if (control?.hasError("email")) {
+          {{ "validations.invalid_email" | translate }}
+        }
+
+        @if (control?.hasError("ageMin")) {
+          {{ "validations.age_min" | translate }}
+        }
+
+        @if (control?.hasError("pattern") && control === phoneNumberControl) {
+          {{ "validations.invalid_format" | translate }}
+        }
+      }
+    </ng-template>
+  </div>
+</div>

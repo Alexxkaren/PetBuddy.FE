@@ -1,0 +1,120 @@
+<h1>{{ "search_page.title" | translate }}</h1>
+
+<form [formGroup]="filterForm">
+  <div class="filter-container">
+    <mat-form-field appearance="fill">
+      <mat-label>{{ "animal.type" | translate }}</mat-label>
+      <mat-select formControlName="petTypeId">
+        @for (type of filteredTypes; track type.id) {
+          <mat-option [value]="type.id">
+            {{ type.name | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{ "search_page.breed" | translate }}</mat-label>
+      <mat-select formControlName="petBreedId" (click)="onPetTypeChange()">
+        @for (breed of filteredBreeds; track breed.id) {
+          <mat-option [value]="breed.id">
+            {{ breed.name | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{ "animal.gender" | translate }}</mat-label>
+      <mat-select formControlName="petGenderId">
+        @for (gender of filteredGenders; track gender.id) {
+          <mat-option [value]="gender.id">
+            {{ gender.name | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{ "search_page.size" | translate }}</mat-label>
+      <mat-select formControlName="petSizeId">
+        @for (size of filteredSizes; track size.id) {
+          <mat-option [value]="size.id">
+            {{ size.name | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{ "register.city" | translate }}</mat-label>
+      <mat-select formControlName="cityId">
+        @for (city of citySelection; track city.id) {
+          <mat-option [value]="city.id">
+            {{ city.name | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{ "animal.placement" | translate }}</mat-label>
+      <mat-select formControlName="petPlacementId">
+        @for (placement of filteredPlacements; track placement.id) {
+          <mat-option [value]="placement.id">
+            {{ placement.name | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="buttons">
+    <button mat-raised-button color="primary" (click)="applyFilters()">
+      {{ "search_page.apply" | translate }}
+    </button>
+    <button mat-raised-button color="primary" (click)="resetFilters()">
+      {{ "search_page.reset" | translate }}
+    </button>
+  </div>
+</form>
+
+<div class="pet-card-container">
+  @for (pet of displayedPets; track pet.id) {
+    <app-pet-profile-preview [pet]="pet"></app-pet-profile-preview>
+  }
+</div>
+
+<div class="no_animal">
+  @if (petNotExist) {
+    <p>{{ "search_page.text" | translate }}</p>
+    <p>{{ "search_page.text2" | translate }}</p>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="saveSearch()"
+      [disabled]="(isAuthenticated | async) === false"
+    >
+      {{ "search_page.email" | translate }}
+    </button>
+  }
+</div>
+
+<ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>
+
+<div class="arrow-buttons">
+  <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 0">
+    <mat-icon class="material-symbols-outlined"> arrow_back </mat-icon>
+  </button>
+  <button
+    (click)="changePage(currentPage + 1)"
+    [disabled]="currentPage >= totalPages - 1"
+  >
+    <mat-icon class="material-symbols-outlined"> arrow_forward </mat-icon>
+  </button>
+</div>
+
+<ng-template #loadingSpinner>
+  @if (isLoading) {
+    <app-spinner></app-spinner>
+  }
+</ng-template>

@@ -1,0 +1,349 @@
+<form class="form-container">
+  <mat-stepper
+    class="custom-stepper"
+    linear
+    #stepper
+    [orientation]="stepperOrientation"
+  >
+    <!-- Step 1 -->
+    <mat-step [stepControl]="firstStepForm">
+      <form [formGroup]="firstStepForm">
+        <ng-template matStepLabel>{{ "animal.type" | translate }}</ng-template>
+        <h1>{{ "animal.header1" | translate }}</h1>
+
+        <div class="image-container">
+          @for (petType of petTypes; track petType.id) {
+            <div class="image-item" >
+              <button
+                [class.selected]="selectedPetType === petType.id"
+                (click)="onPetTypeSelect(petType.id)"
+                attr.data-cy="pet-type-button-{{ petType.id }}"
+            >
+                <img
+                  [src]="'images/' + petType.name.toLowerCase() + '.svg'"
+                  [alt]="petType.name"
+                />
+              </button>
+              <p>{{ "animal." + petType.name.toLowerCase() | translate }}</p>
+            </div>
+          }
+        </div>
+
+        <div class="button-container" data-cy="step-1-next-button">
+          <button
+            mat-flat-button
+            matStepperNext
+            [disabled]="!firstStepForm.valid"
+          >
+            {{ "animal.button_text" | translate }}
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 2 -->
+    <mat-step [stepControl]="secondStepForm">
+      <form [formGroup]="secondStepForm">
+        <ng-template matStepLabel>{{
+          "animal.location" | translate
+        }}</ng-template>
+        <h1>{{ "animal.header2" | translate }}</h1>
+
+        <div class="image-container">
+          @for (placement of placements; track placement.id) {
+            <div class="image-item">
+              <button
+                [class.selected]="
+                  secondStepForm.get('placement')?.value === placement.id
+                "
+                (click)="secondStepForm.patchValue({ placement: placement.id })"
+                attr.data-cy="placement-button-{{ placement.id }}"
+            >
+                <img
+                  [src]="'images/' + placement.name.toLowerCase() + '.svg'"
+                  [alt]="placement.name"
+                />
+              </button>
+              <p>{{ "animal." + placement.name.toLowerCase() | translate }}</p>
+            </div>
+          }
+        </div>
+
+        <h2>{{ "animal.header6" | translate }}</h2>
+
+        <mat-form-field appearance="outline" data-cy="country-select">
+          <mat-label>{{ "register.country" | translate }}</mat-label>
+          <mat-select
+            formControlName="state"
+            (selectionChange)="onStateChange()"
+          >
+            @for (state of translatedStates; track state.id) {
+              <mat-option [value]="state.id" attr.data-cy="country-option-{{ state.id }}">{{ state.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" data-cy="city-select">
+          <mat-label>{{ "register.city" | translate }}</mat-label>
+          <mat-select formControlName="cityId">
+            @for (city of citySelection; track city.id) {
+              <mat-option [value]="city.id" attr.data-cy="city-option-{{ city.id }}">{{ city.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" data-cy="address-input">
+          <mat-label>{{ "common.address" | translate }}</mat-label>
+          <input matInput formControlName="streetAndNumber" data-cy="address-field"/>
+          <mat-error>
+            <ng-container
+              *ngTemplateOutlet="
+                validationError;
+                context: { control: addressControl }
+              "
+            ></ng-container>
+          </mat-error>
+        </mat-form-field>
+
+        <div class="button-container">
+          <button
+            mat-flat-button
+            matStepperNext
+            [disabled]="!secondStepForm.valid"
+           data-cy="step-2-next-button">
+            {{ "animal.button_text" | translate }}
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 3 -->
+    <mat-step [stepControl]="thirdStepForm">
+      <form [formGroup]="thirdStepForm">
+        <ng-template matStepLabel>{{
+          "animal.gender" | translate
+        }}</ng-template>
+        <h1>{{ "animal.header5" | translate }}</h1>
+
+        <div class="image-container">
+          @for (genderType of petGenderTypes; track genderType.id) {
+            <div class="image-item">
+              <button
+                [class.selected]="selectedGenderType === genderType.id"
+                (click)="onGenderTypeSelect(genderType.id)"
+                attr.data-cy="gender-type-{{genderType.id}}"
+            >
+                <img
+                  [src]="'images/' + genderType.name.toLowerCase() + '.svg'"
+                  [alt]="genderType.name"
+                />
+              </button>
+              <p>{{ "animal." + genderType.name.toLowerCase() | translate }}</p>
+            </div>
+          }
+        </div>
+
+        <div class="button-container">
+          <button
+            mat-flat-button
+            matStepperNext
+            [disabled]="!thirdStepForm.valid"
+            data-cy="step-3-next-button"
+          >
+            {{ "animal.button_text" | translate }}
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 4 -->
+    <mat-step [stepControl]="fourthStepForm">
+      <form [formGroup]="fourthStepForm">
+        <ng-template matStepLabel>{{
+          "animal.personality" | translate
+        }}</ng-template>
+        <h1>{{ "animal.header3" | translate }}</h1>
+
+        <div class="personality-buttons">
+          @for (nature of natures; track nature.id) {
+            <button
+              mat-flat-button
+              [class.selected]="selectedNatures.includes(nature.id)"
+              (click)="onNatureSelection(nature.id)"
+              attr.data-cy="personality-button-{{ nature.id }}"
+          >
+              {{ "animal." + nature.name.toLowerCase() | translate }}
+            </button>
+          }
+        </div>
+
+        <div class="button-container">
+          <button
+            mat-flat-button
+            matStepperNext
+            [disabled]="!fourthStepForm.valid"
+            data-cy="step-4-next-button"
+        >
+            {{ "animal.button_text" | translate }}
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 5 -->
+    <mat-step [stepControl]="fifthStepForm">
+      <form [formGroup]="fifthStepForm">
+        <ng-template matStepLabel>{{ "animal.info" | translate }}</ng-template>
+        <h1>{{ "animal.header4" | translate }}</h1>
+
+        <div class="form-field-wrapper">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ "animal.name" | translate }}</mat-label>
+            <input matInput formControlName="petName" data-cy="pet-name-input"/>
+            <mat-error>
+              <ng-container
+                *ngTemplateOutlet="
+                  validationError;
+                  context: { control: petNameControl }
+                "
+              ></ng-container>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-field-wrapper">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ "animal.age" | translate }}</mat-label>
+            <input matInput formControlName="petAge" data-cy="pet-age-input"/>
+            <mat-error>
+              <ng-container
+                *ngTemplateOutlet="
+                  validationError;
+                  context: { control: petAgeControl }
+                "
+              ></ng-container>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "animal.breed" | translate }}</mat-label>
+          <mat-select formControlName="petBreed" data-cy="pet-breed-select">
+            @for (breed of filteredBreeds; track breed.id) {
+              <mat-option [value]="breed.id" attr.data-cy="pet-breed-option-{{breed.id}}">{{
+                breed.name | translate
+              }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <div class="info-message">
+          <mat-icon color="primary">info</mat-icon>
+          <span>{{ "animal.breed_info" | translate }}</span>
+        </div>
+
+        <div class="form-field-wrapper">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ "animal.description" | translate }}</mat-label>
+            <textarea matInput formControlName="description" data-cy="pet-description-input"></textarea>
+            <mat-error>
+              <ng-container
+                *ngTemplateOutlet="
+                  validationError;
+                  context: { control: descriptionControl }
+                "
+              ></ng-container>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-field-wrapper">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ "animal.size" | translate }}</mat-label>
+            <mat-select formControlName="petSize" data-cy="pet-size-select">
+              @for (size of translatedPetSizes; track size.id) {
+                <mat-option [value]="size.id" attr.data-cy="pet-size-option-{{size.id}}">{{ size.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="checkbox-container">
+          <mat-checkbox formControlName="vaccinated" data-cy="vaccinated-checkbox">{{
+            "animal.vaccinated" | translate
+          }}</mat-checkbox>
+          <mat-checkbox formControlName="medicalPapers" data-cy="medical-papers-checkbox">{{
+            "animal.papers" | translate
+          }}</mat-checkbox>
+        </div>
+
+        <div class="upload-container">
+          <p>{{ "animal.text_photo" | translate }}</p>
+          <p>{{ "animal.text_photo2" | translate }}</p>
+          <input
+            type="file"
+            #fileInput
+            multiple
+            hidden
+            (change)="onFileSelected($event)"
+            data-cy="pet-image-input"
+        />
+          <button mat-raised-button color="accent" (click)="fileInput.click()" data-cy="upload-image-button">
+            <mat-icon>cloud_upload</mat-icon> {{ "animal.upload" | translate }}
+          </button>
+          <ul>
+            @for (file of selectedFiles; track file.name) {
+              <li class="file-item">
+                <span>{{ file.name }}</span>
+                <span
+                  class="material-symbols-outlined delete-icon"
+                  tabindex="0"
+                  (click)="removeFile(file)"
+                  (keyup.enter)="removeFile(file)"
+                  >delete</span
+                >
+              </li>
+            }
+          </ul>
+        </div>
+
+        <div class="submit-container">
+          <button
+            mat-flat-button
+            color="primary"
+            [disabled]="!fifthStepForm.valid || selectedFiles.length === 0"
+            (click)="submit()"
+            data-cy="submit-animal-button"
+        >
+            {{ "animal.publish" | translate }}
+          </button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-stepper>
+</form>
+
+<ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>
+
+<ng-template #validationError let-control="control">
+  @if (isInvalid(control)) {
+    @if (control?.hasError("required")) {
+      {{ "validations.field_required" | translate }}
+    }
+    @if (control?.hasError("wrongAge")) {
+      {{ "validations.wrong_age" | translate }}
+    }
+    @if (control?.hasError("numbers_only")) {
+      {{ "validations.numbers_only" | translate }}
+    }
+    @if (control?.hasError("pattern")) {
+      {{ "validations.invalid_character" | translate }}
+    }
+  }
+</ng-template>
+
+<ng-template #loadingSpinner>
+  @if (isLoading) {
+    <app-spinner></app-spinner>
+  }
+</ng-template>

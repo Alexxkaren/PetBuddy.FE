@@ -1,0 +1,110 @@
+.pet-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  margin-bottom: 204px;
+  margin-left: 50px;
+  min-height: calc(100vh - 700px);
+}
+
+app-pet-profile-preview {
+  flex: 0 1 300px;
+  max-width: 300px;
+  box-sizing: border-box;
+}
+
+.app-pet-profile-preview {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 30px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 30px;
+  text-align: center;
+}
+
+.arrow-buttons {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+  margin-right: 20px;
+}
+.arrow-buttons button {
+  margin: 0;
+  border: none;
+  background-color: transparent;
+  color: #ff7518;
+}
+
+.no_animal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: translateY(-150%);
+  margin: 0 20px 20px 20px;
+}
+
+.no_animal p {
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.no_animal button {
+  font-size: 1rem;
+  padding: 10px 20px;
+}
+
+.login-button {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+  .pet-card-container {
+    justify-content: center;
+    margin-left: 0;
+  }
+  .filter-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  .no_animal {
+    transform: translateY(-60%);
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1024px) {
+  mat-form-field mat-label {
+    font-size: 0.8rem;
+  }
+  .no_animal {
+    transform: translateY(-80%);
+  }
+}

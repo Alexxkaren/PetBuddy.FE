@@ -1,0 +1,211 @@
+.mdc-layout-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.mdc-layout-grid__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-card {
+  margin-bottom: 50px;
+  width: 800px;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-card-header mat-card-title {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 120px;
+  left: -40px;
+}
+
+button {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 5px;
+}
+
+mat-icon {
+  padding: 5px;
+  margin-right: 3px !important;
+}
+
+.flat_button {
+  padding-left: 22px;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding-bottom: 10px;
+}
+
+p {
+  margin-left: 10px;
+}
+
+.dialog-container {
+  padding: 40px 65px;
+  max-width: 600px;
+  height: auto;
+  margin: auto;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+h2 {
+  font-size: 1.5em;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+mat-form-field {
+  padding-bottom: 20px;
+}
+
+mat-form-field-wrapper {
+  padding-bottom: 30px;
+}
+
+.dialog_buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  position: absolute;
+  bottom: 3px;
+  right: 30px;
+}
+button {
+  margin-left: 10px;
+}
+
+.dialog-container-password {
+  padding: 40px 80px;
+  max-width: 600px;
+  height: auto;
+  margin: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.custom-date-picker {
+  max-width: 210px;
+  width: 100%;
+}
+
+.custom-date-picker input {
+  max-width: 100%;
+}
+
+@media (min-width: 840px) and (max-width: 1200px) {
+  mat-card {
+    width: 500px;
+  }
+
+  button {
+    font-size: 0.8rem;
+  }
+
+  mat-icon {
+    font-size: 15px;
+  }
+
+  .flat_button {
+    padding-left: 18px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 840px) {
+  mat-card {
+    width: 330px;
+  }
+
+  button {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    left: 10px;
+  }
+
+  .buttons button {
+    margin-left: 15px !important;
+  }
+  .flat_button {
+    margin: 1px !important;
+    padding: 4px;
+  }
+  mat-icon {
+    padding: 5px;
+    margin-right: 5px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .buttons {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    top: 0px;
+    left: 0px;
+  }
+
+  mat-card {
+    width: 300px;
+  }
+
+  button {
+    font-size: 0.8rem;
+  }
+
+  .edit {
+    padding: 18px !important;
+  }
+
+  mat-icon {
+    size: 18px;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  .flat_button {
+    padding-left: 0px;
+  }
+  .dialog-container {
+    padding: 40px 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .second_button {
+    margin: 20px;
+  }
+}

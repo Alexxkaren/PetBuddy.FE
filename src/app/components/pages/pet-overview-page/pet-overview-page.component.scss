@@ -1,0 +1,157 @@
+.images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+  padding: 20px;
+  max-width: 1100px;
+  background-color: #fff7e6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+mat-card-title {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #333;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.label {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #555;
+  font-weight: 700;
+}
+
+h3 {
+  margin: 15px 0;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.pet-image {
+  max-width: 90%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+  transition:
+    transform 0.3s ease-in-out,
+    filter 0.3s ease-in-out;
+}
+
+.images:hover .pet-image {
+  transform: scale(1.02);
+  filter: brightness(0.85);
+}
+
+.pet-info {
+  margin: 5px 0;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.dialog-container {
+  padding: 40px;
+  max-width: 800px;
+  height: auto;
+  margin: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.dialog-container h2 {
+  font-size: 1.5em;
+  margin-bottom: 40px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.dialog-container p {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
+
+.dialog-container button {
+  margin-top: 20px;
+  align-self: center;
+  padding: 10px 20px;
+  font-size: 1.1em;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border: none;
+  cursor: pointer;
+}
+
+.button-container {
+  position: relative;
+  display: inline-block;
+}
+
+.hover-text {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 10px;
+  position: absolute;
+  top: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+}
+
+.button-container:hover .hover-text {
+  visibility: visible;
+}
+
+mat-card-content {
+  width: 100%;
+}
+
+mat-divider {
+  margin: 15px 0;
+  background-color: #ddd;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .pet-image {
+    max-width: 100%;
+  }
+  mat-card {
+    margin: 20px;
+    padding: 15px;
+  }
+  mat-card-title {
+    font-size: 1.2rem;
+  }
+  h3 {
+    font-size: 1rem;
+  }
+  .pet-info {
+    font-size: 0.9rem;
+  }
+}

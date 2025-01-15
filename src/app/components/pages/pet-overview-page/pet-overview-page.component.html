@@ -1,0 +1,159 @@
+@if (petData) {
+  <mat-card>
+    <div class="images">
+      <ng-container>
+        @if (petData && petData.petImages && petData.petImages.length > 0) {
+          <button
+            mat-icon-button
+            (click)="prevImage()"
+            [disabled]="petData.petImages.length <= 1"
+          >
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <img
+            [src]="
+              'data:image/jpeg;base64,' + petData.petImages[currentImageIndex]
+            "
+            [alt]="'Image of ' + petData.name"
+            class="pet-image"
+          />
+          <button
+            mat-icon-button
+            (click)="nextImage()"
+            [disabled]="petData.petImages.length <= 1"
+          >
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        }
+      </ng-container>
+    </div>
+
+    <mat-card-header>
+      <mat-card-title>{{ petData.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-divider></mat-divider>
+
+      <section>
+        <h3>{{ "pet-overview.health" | translate }}</h3>
+        <p class="pet-info">
+          <span class="label">{{ "animal.vaccinated" | translate }}:</span>
+          {{
+            petData.isVaccinated
+              ? ("pet-overview.yes" | translate)
+              : ("pet-overview.no" | translate)
+          }}
+        </p>
+        <p>
+          <span class="label">{{ "animal.papers" | translate }}:</span>
+          {{
+            petData.hasMedicalPapers
+              ? ("pet-overview.yes" | translate)
+              : ("pet-overview.no" | translate)
+          }}
+        </p>
+      </section>
+      <mat-divider></mat-divider>
+
+      <section>
+        <h3>{{ "pet-overview.about" | translate }} {{ petData.name }}</h3>
+        <p>
+          <span class="label">{{ "pet-overview.age" | translate }}:</span>
+          @if (petData.age === 1) {
+            {{ petData.age }}
+            {{ "pet-overview.year" | translate }}
+          } @else if (petData.age > 1 && petData.age <= 4) {
+            {{ petData.age }}
+            {{ "pet-overview.years" | translate }}
+          } @else if (petData.age > 4) {
+            {{ petData.age }}
+            {{ "pet-overview.more_years" | translate }}
+          }
+        </p>
+        <p>
+          <span class="label">{{ "pet-overview.gender" | translate }}:</span>
+          {{ getTranslatedGender(petData.genderId) }}
+        </p>
+        <p>
+          <span class="label">{{ "pet-overview.breed" | translate }}:</span>
+          {{ getTranslatedBreed(petData.breedId) }}
+        </p>
+        <p>
+          <span class="label">{{ "pet-overview.size" | translate }}:</span>
+          {{ getTranslatedSize(petData.petSizeId) }}
+        </p>
+        <p>
+          <span class="label">{{ "profile-page.city" | translate }}:</span>
+          {{ getTranslatedCity(petData.cityId) }}
+        </p>
+        <p>
+          <span class="label">{{ "animal.placement" | translate }}:</span>
+          {{ getTranslatedPlacement(petData.petPlacementId) }}
+        </p>
+        <p>
+          <span class="label">{{ "animal.nature" | translate }}:</span>
+          {{ getTranslatedNatures(petData.petNaturesIds) }}
+        </p>
+        <p>
+          <span class="label"
+            >{{ "pet-overview.description" | translate }}:</span
+          >
+          {{ petData.description }}
+        </p>
+      </section>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <div class="button-container">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="openContactInfoDialog()"
+          [disabled]="(isAuthenticated | async) === false"
+        >
+          {{ "pet-overview.contact" | translate }}
+        </button>
+        @if ((isAuthenticated | async) === false) {
+          <div class="hover-text">
+            {{ "pet-overview.contact_button_text" | translate }}
+          </div>
+        }
+      </div>
+    </mat-card-actions>
+  </mat-card>
+}
+
+<ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>
+<ng-template #loadingSpinner>
+  @if (isLoading) {
+    <app-spinner></app-spinner>
+  }
+</ng-template>
+
+<ng-template
+  #dialogTemplatUserContactInfo
+  let-data
+  class="dialogTemplateUserContactInfo"
+>
+  <div class="dialog-container">
+    <h2>{{ "pet-overview.contact" | translate }}</h2>
+    <div>
+      <p>
+        <span class="label">{{ "common.first_name" | translate }}:</span>
+        {{ userFirstName }}
+      </p>
+      <p>
+        <span class="label">{{ "common.last_name" | translate }}:</span>
+        {{ userLastName }}
+      </p>
+      <p>
+        <span class="label">{{ "common.phone_number" | translate }}:</span>
+        {{ userPhoneNumber }}
+      </p>
+    </div>
+
+    <button mat-stroked-button (click)="onCancel()">
+      {{ "profile-page.cancel" | translate }}
+    </button>
+  </div>
+</ng-template>

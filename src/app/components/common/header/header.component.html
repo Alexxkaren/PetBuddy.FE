@@ -1,0 +1,131 @@
+<div class="mdc-layout-grid">
+  <div class="mdc-layout-grid__inner">
+    <div class="mdc-layout-grid__cell">
+      <div class="navbar">
+        <img
+          ngSrc="images/petBuddyLogo.svg"
+          width="230"
+          height="60"
+          priority
+          alt="logo"
+          tabindex="0"
+          (click)="navigateTo('/home')"
+          (keydown.enter)="navigateTo('/home')"
+        />
+
+        <div class="button-container">
+          <button
+            mat-button
+            class="menu-button"
+            [matMenuTriggerFor]="menu"
+            data-cy="header-mobile-menu-btn"
+          >
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+
+          <mat-menu #menu="matMenu" class="hiddenBurger">
+            @if ((isAuthenticated | async) === false) {
+              <button
+                mat-menu-item
+                (click)="login()"
+                data-cy="menu-started-btn"
+              >
+                <mat-icon>login</mat-icon>
+                <span data-cy="menu-started-btn-text">{{
+                  "header.started" | translate
+                }}</span>
+              </button>
+              @for (lang of supportedLanguages; track lang.Code) {
+                <button
+                  mat-menu-item
+                  (click)="setLanguage(lang.Code)"
+                  attr.data-cy="menu-btn-lang-{{ lang.Code }}"
+                >
+                  <span>{{ lang.Shorthand }}</span>
+                  @if (selectedLang === lang.Code) {
+                    <mat-icon>check</mat-icon>
+                  }
+                </button>
+              }
+            } @else {
+              <button
+                mat-menu-item
+                (click)="navigateTo('/profile')"
+                data-cy="menu-profile-btn"
+              >
+                <mat-icon>home</mat-icon>
+                {{ "header.account" | translate }}
+              </button>
+              <button
+                mat-menu-item
+                (click)="logout()"
+                data-cy="menu-logout-btn"
+              >
+                <mat-icon>logout</mat-icon>
+                {{ "header.logout" | translate }}
+              </button>
+              @for (lang of supportedLanguages; track lang.Code) {
+                <button mat-menu-item (click)="setLanguage(lang.Code)">
+                  <span>{{ lang.Shorthand }}</span>
+                  @if (selectedLang === lang.Code) {
+                    <mat-icon>check</mat-icon>
+                  }
+                </button>
+              }
+            }
+          </mat-menu>
+
+          <mat-button-toggle-group
+            class="radiogroup"
+            role="radiogroup"
+            aria-labelledby="group-title"
+            [(ngModel)]="selectedLang"
+            (change)="setLanguage(selectedLang)"
+          >
+            @for (lang of supportedLanguages; track lang.Code) {
+              <mat-button-toggle
+                value="{{ lang.Code }}"
+                aria-label="{{ lang.Description }}"
+                attr.data-cy="header-btn-lang-{{ lang.Code }}"
+                >{{ lang.Shorthand }}</mat-button-toggle
+              >
+            }
+          </mat-button-toggle-group>
+
+          <div class="buttons">
+            @if ((isAuthenticated | async) === false) {
+              <button
+                mat-flat-button
+                (click)="login()"
+                data-cy="header-started-btn"
+              >
+                <mat-icon>login</mat-icon>
+                <span data-cy="header-started-btn-text">{{
+                  "header.started" | translate
+                }}</span>
+              </button>
+            } @else {
+              <button
+                mat-flat-button
+                class="account-button"
+                (click)="navigateTo('/profile')"
+                data-cy="header-profile-btn"
+              >
+                <mat-icon>home</mat-icon>
+                {{ "header.account" | translate }}
+              </button>
+              <button
+                mat-stroked-button
+                (click)="logout()"
+                data-cy="header-logout-btn"
+              >
+                <mat-icon>logout</mat-icon>
+                {{ "header.logout" | translate }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

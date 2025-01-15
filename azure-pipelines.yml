@@ -1,0 +1,156 @@
+name: "$(BuilVersionPrefix).$(Date:yyMM).$(rev:r)"
+
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  - name: buildVersion
+    value: $Env:BUILD_BUILDNUMBER
+  - name: pnpm_config_cache
+    value: "$(Pipeline.Workspace)/.pnpm-store"
+  - name: artifactName
+    value: "$(Build.Repository.Name)_$(Build.SourceBranchName)_$(Build.BuildNumber)"
+  - group: "petbuddy.fe.prod"
+
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  - stage: Test
+    displayName: "Test"
+    jobs:
+      - job: Test
+        displayName: "Test"
+        steps:
+          - task: NodeTool@0
+            displayName: Install Node
+            inputs:
+              versionSpec: 20.x
+
+          - task: Cache@2
+            displayName: Cache pnpm
+            inputs:
+              key: 'pnpm | "$(Agent.OS)" | pnpm-lock.yaml'
+              path: $(pnpm_config_cache)
+
+          - script: |
+              npm install -g pnpm
+              pnpm config set store-dir $(pnpm_config_cache)
+            displayName: Install pnpm
+
+          - script: |
+              pnpm i
+            displayName: Install dependencies
+
+          - script: |
+              pnpm lint
+            displayName: "Run Lint"
+
+          - script: |
+              pnpm test
+            displayName: "Test Angular"
+
+          - task: PublishCodeCoverageResults@2
+            displayName: "Publish code coverage results"
+            inputs:
+              summaryFileLocation: "**/cobertura-coverage.xml"
+              failIfCoverageEmpty: true
+            condition: succeededOrFailed()
+
+          - task: PublishTestResults@2
+            displayName: "Publish Angular test results"
+            inputs:
+              testResultsFormat: "JUnit"
+              testResultsFiles: "**/junit.xml"
+            condition: succeededOrFailed()
+
+  - stage: Build
+    displayName: "Build"
+    dependsOn: Test
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: Build
+        steps:
+          - task: NodeTool@0
+            displayName: "Install Node"
+            inputs:
+              versionSpec: "20.x"
+
+          - task: PowerShell@2
+            displayName: "Update app version"
+            inputs:
+              targetType: "inline"
+              script: |
+                $packageJsonPath = "$(System.DefaultWorkingDirectory)/package.json"
+                $packageJsonContent = Get-Content $packageJsonPath
+                $version = $(buildVersion)
+                $packageJsonContent -replace "(?<=""Version""\:\s*"")([\d]+)([\.]{1}[\d]+)([\.]{1}[\d]+)([\.]{1}[\d]+)*(?="",)", "$version" | Set-Content $packageJsonPath
+                Write-Host "New version: $version"
+              pwsh: true
+
+          - task: Cache@2
+            displayName: Cache pnpm
+            inputs:
+              key: 'pnpm | "$(Agent.OS)" | pnpm-lock.yaml'
+              path: $(pnpm_config_cache)
+
+          - script: |
+              npm install -g pnpm
+              pnpm config set store-dir $(pnpm_config_cache)
+            displayName: Install pnpm
+
+          - script: |
+              pnpm i
+            displayName: Install dependencies
+
+          - task: CmdLine@2
+            displayName: "Build application"
+            inputs:
+              script: |
+                pnpm build
+
+          - task: CopyFiles@2
+            displayName: Copy Build Output
+            inputs:
+              SourceFolder: dist/pet-buddy/browser
+              Contents: "**"
+              TargetFolder: $(Build.ArtifactStagingDirectory)
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Artifact
+            inputs:
+              PathtoPublish: $(Build.ArtifactStagingDirectory)
+              ArtifactName: $(artifactName)
+
+  - stage: Deploy
+    displayName: "Deploy"
+    dependsOn: Build
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: Deploy
+        displayName: Deploy Web App
+        environment: "petbuddy-fe-prod"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+
+                - task: AzureCLI@2
+                  displayName: Upload to Azure Blob Storage
+                  inputs:
+                    connectedServiceNameARM: $(connectedServiceNameARM)
+                    scriptType: "pscore"
+                    scriptLocation: "inlineScript"
+                    inlineScript: |
+                      az storage blob delete-batch `
+                        --source '$web' `
+                        --pattern '*' `
+                        --account-name '$(storageAccountName)'
+
+                      az storage blob upload-batch `
+                        --destination '$web' `
+                        --source '$(Pipeline.Workspace)/$(artifactName)' `
+                        --account-name '$(storageAccountName)'

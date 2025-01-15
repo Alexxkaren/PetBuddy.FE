@@ -1,0 +1,224 @@
+<main class="main-container">
+  <ng-template #dialogTemplateRegister let-data>
+    <form [formGroup]="regForm" class="dialog-container" (ngSubmit)="submit()">
+      <h2>{{ "register.register" | translate }}</h2>
+      <mat-dialog-content>
+        <div class="form-row">
+          <div class="form-column">
+            <!-- First Name -->
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "common.first_name" | translate }}</mat-label>
+              <input matInput formControlName="firstName" required data-cy="input-register-first-name"/>
+
+              @if (isInvalid(firstNameControl)) {
+                <mat-error>
+                  <ng-container
+                    *ngTemplateOutlet="
+                      validationError;
+                      context: { control: firstNameControl }
+                    "
+                  ></ng-container>
+                </mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Last Name -->
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "common.last_name" | translate }}</mat-label>
+              <input matInput formControlName="lastName" required data-cy="input-register-last-name"/>
+
+              @if (isInvalid(lastNameControl)) {
+                <mat-error>
+                  <ng-container
+                    *ngTemplateOutlet="
+                      validationError;
+                      context: { control: lastNameControl }
+                    "
+                  ></ng-container>
+                </mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Email -->
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "common.email" | translate }}</mat-label>
+              <input matInput formControlName="email" required data-cy="input-register-email"/>
+
+              @if (isInvalid(emailControl)) {
+                <mat-error>
+                  <ng-container
+                    *ngTemplateOutlet="
+                      validationError;
+                      context: { control: emailControl }
+                    "
+                  ></ng-container>
+                </mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Date of Birth -->
+            <mat-form-field appearance="outline" class="custom-date-picker">
+              <mat-label>{{ "common.date_of_birth" | translate }}</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [max]="today"
+                min="1920-01-01"
+                formControlName="dateOfBirth"
+                required
+                data-cy="input-register-dob"
+            />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+
+              @if (isInvalid(dateOfBirthControl)) {
+                <mat-error>
+                  <ng-container
+                    *ngTemplateOutlet="
+                      validationError;
+                      context: { control: dateOfBirthControl }
+                    "
+                  ></ng-container>
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="form-column">
+            <!-- Phone Number -->
+            <mat-form-field
+              appearance="outline"
+              [class.extra-error-margin]="
+                isInvalid(phoneNumberControl, 'pattern')
+              "
+            >
+              <mat-label>{{ "common.phone_number" | translate }}</mat-label>
+              <input
+                matInput
+                formControlName="phoneNumber"
+                placeholder="+421 ..."
+                required
+                data-cy="input-register-phone"
+            />
+              @if (isInvalid(phoneNumberControl)) {
+                <mat-error>
+                  <ng-container
+                    *ngTemplateOutlet="
+                      validationError;
+                      context: { control: phoneNumberControl }
+                    "
+                  ></ng-container>
+                </mat-error>
+              }
+            </mat-form-field>
+
+            <!-- State -->
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "register.country" | translate }}</mat-label>
+              <mat-select
+                formControlName="state"
+                (selectionChange)="onStateChange()"
+                data-cy="select-register-state"
+            >
+                @for (state of translatedStates; track state.id) {
+                  <mat-option [value]="state.id">
+                    {{ "states." + state.id | translate }}
+                  </mat-option>
+                }
+              </mat-select>
+
+              @if (isInvalid(stateControl)) {
+                <mat-error>
+                  <ng-container
+                    *ngTemplateOutlet="
+                      validationError;
+                      context: { control: stateControl }
+                    "
+                  ></ng-container>
+                </mat-error>
+              }
+            </mat-form-field>
+
+            <!-- City -->
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "register.city" | translate }}</mat-label>
+              <mat-select formControlName="cityId" data-cy="select-register-city">
+                @for (city of citySelection; track city.id) {
+                  <mat-option [value]="city.id">
+                    {{ city.name }}
+                  </mat-option>
+                }
+              </mat-select>
+
+              @if (isInvalid(cityControl)) {
+                <mat-error>
+                  <ng-container
+                    *ngTemplateOutlet="
+                      validationError;
+                      context: { control: cityControl }
+                    "
+                  ></ng-container>
+                </mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Address -->
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "common.address" | translate }}</mat-label>
+              <input matInput formControlName="streetAndNumber" data-cy="input-register-adress"/>
+
+              @if (isInvalid(addressControl)) {
+                <mat-error>
+                  <ng-container
+                    *ngTemplateOutlet="
+                      validationError;
+                      context: { control: addressControl }
+                    "
+                  ></ng-container>
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="center-button">
+          <button mat-flat-button type="submit" [disabled]="regForm.invalid" data-cy="btn-register-submit">
+            {{ "register.register" | translate }}
+          </button>
+        </div>
+      </mat-dialog-content>
+    </form>
+  </ng-template>
+</main>
+
+<ng-template #validationError let-control="control">
+  @if (isInvalid(control)) {
+    @if (control?.hasError("required")) {
+      {{ "validations.field_required" | translate }}
+    }
+
+    @if (
+      control?.hasError("pattern") &&
+      control?.value &&
+      (control === firstNameControl || control === lastNameControl)
+    ) {
+      {{ "validations.invalid_character" | translate }}
+    }
+
+    @if (control?.hasError("email")) {
+      {{ "validations.invalid_email" | translate }}
+    }
+
+    @if (control?.hasError("ageMin")) {
+      {{ "validations.age_min" | translate }}
+    }
+
+    @if (control?.hasError("pattern") && control === phoneNumberControl) {
+      {{ "validations.invalid_format" | translate }}
+    }
+  }
+</ng-template>

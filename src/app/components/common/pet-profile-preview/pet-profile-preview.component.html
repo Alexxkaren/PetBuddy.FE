@@ -1,0 +1,55 @@
+<mat-card class="card" appearance="outlined">
+  <mat-card-content
+    class="card-content"
+    (click)="navigateTo('pet-overview', pet.id.toString())"
+  >
+    <img
+      [src]="'data:image/png;base64,' + pet.imagePreview"
+      alt="image of {{ pet.name }}"
+      class="pet-image"
+    />
+    <div class="info-container">
+      <p class="pet-name">{{ pet.name }}</p>
+      <p class="pet-location">
+        <span class="material-symbols-outlined">location_on</span>
+        {{ getCityName(pet.cityId) }}
+      </p>
+    </div>
+    <img
+      [src]="'images/' + getGenderIcon(pet.genderId)"
+      alt="Gender icon"
+      class="gender-icon"
+    />
+  </mat-card-content>
+  @if (canDelete) {
+    <mat-icon (click)="openDeleteDialog()" class="delete-button"
+      >close</mat-icon
+    >
+  }
+</mat-card>
+
+<ng-template
+  #dialogTemplateDeleteAnimal
+  let-data
+  class="dialogTemplateDeleteAnimal"
+>
+  <div class="dialog-container">
+    <h2>{{ "my_pets.header" | translate }}</h2>
+    <p>{{ "my_pets.text" | translate }}</p>
+    <div class="dialog_buttons">
+      <button mat-stroked-button (click)="onCancel()">
+        {{ "my_pets.cancel" | translate }}
+      </button>
+      <button mat-flat-button (click)="onDeleteConfirmed(pet.id)">
+        {{ "my_pets.delete" | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>
+<ng-template #loadingSpinner>
+  @if (isLoading) {
+    <app-spinner></app-spinner>
+  }
+</ng-template>

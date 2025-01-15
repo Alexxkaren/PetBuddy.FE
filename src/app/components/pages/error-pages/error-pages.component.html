@@ -1,0 +1,15 @@
+<div class="errorPage">
+  <div class="error-image">
+    <img
+      src="images/{{ errorPages.img }}.svg"
+      alt="{{ errorPageType }}"
+      class="image"
+    />
+  </div>
+  <div class="text-and-title">
+    <h1 class="error-title">{{ errorPages.Title | translate }}</h1>
+    <div class="container-error-text">
+      <p class="error-text">{{ errorPages.Text | translate }}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+<main class="main-container">
+  <div class="content">
+    <p class="slogan">{{ "main-page.slogan" | translate }}</p>
+  </div>
+  <div class="button-container">
+    <button
+      mat-flat-button
+      class="buttons"
+      (click)="navigateTo('pet-search')"
+      class="buttons"
+    >
+      {{ "main-page.button_text" | translate }}
+    </button>
+    @if ((isAuthenticated | async) === true) {
+      <button
+        mat-flat-button
+        (click)="navigateTo('add-animal')"
+        class="second-bttn"
+        data-cy="add-animal-button"
+      >
+        {{ "animal.add_animal" | translate }}
+      </button>
+    }
+  </div>
+
+  <img src="images/paws.svg" alt="paws" class="paws" />
+
+  <div>
+    <div class="cards-row">
+      <div class="goals">{{ "main-page.header" | translate }}</div>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <div class="title-container">
+              <img src="images/glass.svg" alt="zoom" class="title-icon-glass" />
+              <span class="title-text">{{
+                "main-page.title1" | translate
+              }}</span>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ "main-page.text1" | translate }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <div class="title-container">
+              <img src="images/dog2.svg" alt="dog" class="title-icon" />
+              <span class="title-text">{{
+                "main-page.title2" | translate
+              }}</span>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ "main-page.text2" | translate }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <div class="title-container">
+              <img src="images/house2.svg" alt="house" class="title-icon" />
+              <span class="title-text">{{
+                "main-page.title3" | translate
+              }}</span>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ "main-page.text3" | translate }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="about-container">
+    <div class="about">
+      <h2>{{ "main-page.about" | translate }}</h2>
+      <p>{{ "main-page.about_text_line1" | translate }}</p>
+      <p>{{ "main-page.about_text_line2" | translate }}</p>
+      <p>{{ "main-page.about_text_line3" | translate }}</p>
+    </div>
+  </div>
+</main>

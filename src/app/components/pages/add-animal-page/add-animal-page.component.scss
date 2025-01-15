@@ -1,0 +1,182 @@
+.image-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.image-item {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.image-item img {
+  width: 120px;
+  height: 120px;
+  display: block;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  margin: 30px 0;
+  font-weight: 400;
+}
+
+h1 {
+  text-align: center;
+  margin: 50px 0 30px 0;
+  font-weight: 400;
+}
+
+mat-form-field {
+  display: block;
+  margin-bottom: 20px;
+  width: 60%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+button {
+  margin-top: 20px;
+}
+
+.personality-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  justify-items: center;
+}
+
+.button-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.personality-buttons button {
+  width: 150px;
+  height: 50px;
+  padding: 10px;
+  text-align: center;
+  margin: 5px 0;
+  justify-self: center;
+  font-size: 1rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.checkbox-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+mat-checkbox {
+  margin: 0;
+}
+
+.upload-container {
+  max-width: 400px;
+  margin: 16px auto;
+  border: 2px dashed #cccccc;
+  padding: 16px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+.upload-container button {
+  margin-top: 16px;
+}
+
+.submit-container {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.info-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.delete-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  h1,
+  h2 {
+    font-size: 1.5rem;
+    margin: 30px 0 20px 0;
+  }
+
+  .image-item img {
+    width: 80px;
+    height: 80px;
+    margin: 0;
+  }
+
+  .personality-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .personality-buttons button {
+    width: 100%;
+    max-width: 140px;
+    margin: 5px auto;
+    height: 40px;
+    font-size: 0.8rem;
+  }
+  mat-icon {
+    padding: 30px;
+  }
+}
+
+button.selected {
+  border: 3px solid #ee9e42;
+  background-color: rgba(108, 119, 131, 0.158);
+}
+
+.personality-buttons button.selected {
+  color: black;
+}
+
+li {
+  list-style-type: none;
+}
